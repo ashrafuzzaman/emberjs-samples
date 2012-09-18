@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Iterate</title>
+  <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+  <script type="text/x-handlebars">
+	<ul>
+	  {{#each Stories.storiesController}}
+	    <li>
+	    {{title}} - {{description}}
+	    </li>
+	  {{/each}}
+	</ul>
+	</script>
+	​
+
+  <script src="js/libs/jquery-1.7.2.min.js"></script>
+  <script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
+  <script src="js/libs/ember-1.0.pre.min.js"></script>
+  <script type="text/javascript">
+		//Create the js application
+		Stories = Ember.Application.create();
+		//Define model object 
+		Stories.Story = Ember.Object.extend({
+	    title: null,
+	    description: null
+		});
+		//Define controller as Array proxy
+		Stories.storiesController = Ember.ArrayProxy.create({
+	    content: [Stories.Story.create({
+        title: "S 1",
+        description: "Bla bla"
+	    })]
+		});
+
+		//Add a new story to the array which will automatically sync with view
+		var story = Stories.Story.create({
+	    title: 'S 2',
+	    description: 'Bla bla'
+		});
+		Stories.storiesController.pushObjects(story);
+		//Change existing story in the list which will also automatically sync with view 
+		story = Stories.storiesController.objectAtContent("0");
+		story.set("title", "Updated");
+	</script>
+</body>
+</html>
