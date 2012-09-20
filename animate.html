@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Animate</title>
+  <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+  <script type="text/x-handlebars">
+		<ul>
+		{{#each Stories.storiesController}}
+		{{#view Stories.StoryView storyBinding="this"}}
+			<li>
+		    {{title}}
+		    {{description}}
+		    <a href="#" title="remove" {{action "removeStory" on="click"}}>X</a>
+		  </li>
+		{{/view}}
+		{{/each}}
+		</ul>
+	</script>
+
+	<hr/>
+
+  <script type="text/x-handlebars">
+		<ul>
+		{{#each Stories.storiesController}}
+		{{#view Stories.StoryView storyBinding="this"}}
+			<li>
+		    {{title}}
+		    {{description}}
+		    <a href="#" title="remove" {{action "removeStory" on="click"}}>X</a>
+		  </li>
+		{{/view}}
+		{{/each}}
+		</ul>
+	</script>
+
+  <script src="js/libs/jquery-1.7.2.min.js"></script>
+  <script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
+  <script src="js/libs/ember-1.0.pre.min.js"></script>
+  <script type="text/javascript">
+		Stories = Ember.Application.create();
+
+		Stories.Story = Ember.Object.extend({
+		  id: null,
+		  title: null,
+		  description: null
+		});
+
+		Stories.storiesController = Ember.ArrayProxy.create({
+		  content: []
+		});
+
+		Stories.StoryView = Ember.View.extend({
+		  removeStory: function(){
+		    var story = this.getPath('story');
+        this.$().hide("slow", function() {
+		    	Stories.storiesController.removeObject(story);
+        });
+		  },
+		  didInsertElement: function(){
+				this.$().hide().fadeIn(1000);
+			},
+		});
+
+		var storyCounter = 0;
+		var addStory = function(){
+			if(storyCounter < 10) {
+				storyCounter++;
+				Stories.storiesController.pushObject(Stories.Story.create({
+					id: storyCounter,
+					title: "S " + storyCounter,
+					description: "Bla bla"
+				}));
+			} else {
+				clearInterval(storyCounter);
+			}
+		};
+
+		$(document).ready(function(){
+			setInterval(addStory, 500);
+		});
+	</script>
+</body>
+</html>
