@@ -19,7 +19,21 @@
 		{{/each}}
 		</ul>
 	</script>
-	​
+	​<hr/>
+  <script type="text/x-handlebars">
+		<ul>
+		{{#each Stories.storiesController}}
+		{{#view Stories.StoryView storyBinding="this"}}
+			<li>
+		    {{title}}
+		    {{description}}
+		    <a href="#" {{action "alertStory" on="click"}}>alert</a>
+		    <a href="#" title="remove" {{action "removeStory" on="click"}}>X</a>
+		  </li>
+		{{/view}}
+		{{/each}}
+		</ul>
+	</script>
 
   <script src="js/libs/jquery-1.7.2.min.js"></script>
   <script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
@@ -37,8 +51,7 @@
 		  content: [Stories.Story.create({id: 1, 
 		  	title: "S 1", 
 		  	description: "Bla bla"})
-		  ]
-		});
+		  ]});
 
 		Stories.StoryView = Ember.View.extend({
 		  alertStory: function() {
